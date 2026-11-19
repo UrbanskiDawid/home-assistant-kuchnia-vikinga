@@ -7,8 +7,14 @@
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A minimal custom integration that shows today's [Kuchnia Vikinga](https://panel.kuchniavikinga.pl)
-meals in Home Assistant: each dish's name, kcal and ingredients.
+A minimal custom integration that shows today's [Kuchnia Vikinga](https://kuchniavikinga.pl/)
+diet catering meals in Home Assistant: each dish's name, kcal and ingredients.
+It reads them from your account in the [customer panel](https://panel.kuchniavikinga.pl).
+
+> [!NOTE]
+> This is an **unofficial**, community project. It is not affiliated with, endorsed by or
+> supported by [Kuchnia Vikinga](https://kuchniavikinga.pl/). Please don't contact them about it;
+> [open an issue](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/issues) here instead.
 
 ![Dashboard card](docs/dashboard_card.png)
 
@@ -94,6 +100,10 @@ To release, push a tag: `git tag v1.2.3 && git push origin v1.2.3`. The workflow
 
 ## License
 
-[MIT](LICENSE)
+Released under the [MIT License](LICENSE).
 
-Unofficial; not affiliated with Kuchnia Vikinga. Uses the same endpoints as the customer panel.
+## Disclaimer
+
+Unofficial and not affiliated with [Kuchnia Vikinga](https://kuchniavikinga.pl/). "Kuchnia Vikinga" is
+used only to name the service this integration works with. It uses the same endpoints as the
+[customer panel](https://panel.kuchniavikinga.pl), which may change at any time without notice.
