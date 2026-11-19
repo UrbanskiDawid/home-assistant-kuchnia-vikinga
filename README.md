@@ -1,4 +1,4 @@
-# Kuchnia Vikinga for Home Assistant
+# Kuchnia Vikinga dla Home Assistant
 
 [![GitHub Latest Release](https://img.shields.io/github/v/release/UrbanskiDawid/home-assistant-kuchnia-vikinga)](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/releases)
 [![Test](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/test.yaml/badge.svg)](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/test.yaml)
@@ -7,35 +7,36 @@
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A minimal custom integration that shows today's [Kuchnia Vikinga](https://kuchniavikinga.pl/)
-diet catering meals in Home Assistant: each dish's name, kcal and ingredients.
-It reads them from your account in the [customer panel](https://panel.kuchniavikinga.pl).
+Prosta integracja, która pokazuje w Home Assistant dzisiejsze posiłki z cateringu dietetycznego
+[Kuchnia Vikinga](https://kuchniavikinga.pl/): nazwę każdego dania, kaloryczność i składniki.
+Dane pobiera z Twojego konta w [panelu klienta](https://panel.kuchniavikinga.pl).
 
 > [!NOTE]
-> This is an **unofficial**, community project. It is not affiliated with, endorsed by or
-> supported by [Kuchnia Vikinga](https://kuchniavikinga.pl/). Please don't contact them about it;
-> [open an issue](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/issues) here instead.
+> To **nieoficjalny** projekt społecznościowy. Nie jest powiązany z firmą
+> [Kuchnia Vikinga](https://kuchniavikinga.pl/), nie jest przez nią wspierany ani zatwierdzony.
+> Nie kontaktuj się z nimi w jego sprawie, zamiast tego
+> [zgłoś problem](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/issues) tutaj.
 
-![Dashboard card](docs/dashboard_card.png)
+![Karta na dashboardzie](docs/dashboard_card.png)
 
-## Installation
+## Instalacja
 
-### Using [HACS](https://hacs.xyz/) (recommended)
+### Przez [HACS](https://hacs.xyz/) (zalecane)
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=UrbanskiDawid&repository=home-assistant-kuchnia-vikinga&category=integration)
+[![Otwórz Home Assistant i dodaj repozytorium w HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=UrbanskiDawid&repository=home-assistant-kuchnia-vikinga&category=integration)
 
-Click the button above, or add it by hand:
+Kliknij przycisk powyżej albo dodaj repozytorium ręcznie:
 
-* In HACS open the ⋮ menu → _Custom repositories_
-* Add `https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga` with type _Integration_
-* Search for "Kuchnia Vikinga" and click _Download_
-* Restart Home Assistant
+* W HACS otwórz menu ⋮ → _Niestandardowe repozytoria_ (_Custom repositories_)
+* Dodaj `https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga` z typem _Integracja_ (_Integration_)
+* Wyszukaj „Kuchnia Vikinga” i kliknij _Pobierz_
+* Uruchom ponownie Home Assistant
 
-HACS not installed yet? Follow the [HACS download guide](https://hacs.xyz/docs/use/download/download/) first.
+Nie masz jeszcze HACS? Najpierw zainstaluj go według [instrukcji HACS](https://hacs.xyz/docs/use/download/download/).
 
-### Manual
+### Ręcznie
 
-Download [*kuchnia_vikinga.zip*](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/releases/latest/download/kuchnia_vikinga.zip) and extract it to `config/custom_components/kuchnia_vikinga`:
+Pobierz [*kuchnia_vikinga.zip*](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/releases/latest/download/kuchnia_vikinga.zip) i rozpakuj do `config/custom_components/kuchnia_vikinga`:
 ```bash
 mkdir -p /config/custom_components/kuchnia_vikinga
 cd /config/custom_components/kuchnia_vikinga
@@ -44,25 +45,27 @@ unzip kuchnia_vikinga.zip
 rm kuchnia_vikinga.zip
 ```
 
-Then restart Home Assistant.
+Następnie uruchom ponownie Home Assistant.
 
-## Set up
+## Konfiguracja
 
-1. Settings → Devices & services → Add integration → **Kuchnia Vikinga**.
-2. Enter your panel.kuchniavikinga.pl e-mail and password.
+1. Ustawienia → Urządzenia oraz usługi → Dodaj integrację → **Kuchnia Vikinga**.
+2. Podaj e-mail i hasło do panel.kuchniavikinga.pl.
 
-   ![Configuration form](docs/config_flow.png)
+   ![Formularz konfiguracji](docs/config_flow.png)
 
-This creates one sensor, `sensor.kuchnia_vikinga_dzisiaj`:
-- **state**: the number of meals delivered today (0 if there is no delivery)
-- **attributes**: `date`, and `meals` as a list of `{meal, name, kcal, ingredients}`
+Integracja tworzy jeden sensor, `sensor.kuchnia_vikinga_dzisiaj`:
+- **stan**: liczba posiłków dostarczonych dzisiaj (0, jeśli nie ma dostawy)
+- **atrybuty**: `date` oraz `meals`, czyli lista `{meal, name, kcal, ingredients}`
 
-The panel is asked **once a day**. After a successful fetch it isn't contacted again until the next day. If a fetch fails, it retries at 5 minutes past each hour.
+Panel jest odpytywany **raz dziennie**. Po udanym pobraniu integracja nie łączy się z nim aż do
+następnego dnia. Jeśli pobranie się nie uda, ponawia próbę 5 minut po każdej pełnej godzinie.
 
-## Dashboard card
+## Karta na dashboard
 
-A full-width section (sections view) with one collapsible row per meal. Ingredients stay hidden until you click a meal.
-Edit dashboard → ⋮ → *Raw configuration editor* → paste it into the view's `sections:` list:
+Sekcja na całą szerokość (widok sekcji) z jednym rozwijanym wierszem na posiłek. Składniki są
+ukryte, dopóki nie klikniesz posiłku.
+Edytuj dashboard → ⋮ → *Edytor konfiguracji YAML* → wklej poniższy fragment do listy `sections:` widoku:
 
 ```yaml
 type: grid
@@ -87,23 +90,25 @@ cards:
       {%- endfor %}
 ```
 
-The integration icon (`brand/icon.png`) is shown by Home Assistant 2026.3 or newer.
+Ikona integracji (`brand/icon.png`) jest widoczna w Home Assistant 2026.3 i nowszych.
 
-## Development
+## Rozwój
 
 ```sh
 pip install -r requirements_test.txt
 pytest
 ```
 
-To release, push a tag: `git tag v1.2.3 && git push origin v1.2.3`. The workflow sets the manifest version from the tag and attaches `kuchnia_vikinga.zip` to the release.
+Aby wydać nową wersję, wypchnij tag: `git tag v1.2.3 && git push origin v1.2.3`. Workflow ustawi
+wersję w manifeście na podstawie tagu i dołączy `kuchnia_vikinga.zip` do wydania.
 
-## License
+## Licencja
 
-Released under the [MIT License](LICENSE).
+Projekt jest udostępniony na [licencji MIT](LICENSE).
 
-## Disclaimer
+## Zastrzeżenie
 
-Unofficial and not affiliated with [Kuchnia Vikinga](https://kuchniavikinga.pl/). "Kuchnia Vikinga" is
-used only to name the service this integration works with. It uses the same endpoints as the
-[customer panel](https://panel.kuchniavikinga.pl), which may change at any time without notice.
+Projekt nieoficjalny, niepowiązany z firmą [Kuchnia Vikinga](https://kuchniavikinga.pl/). Nazwa
+„Kuchnia Vikinga” służy wyłącznie do wskazania usługi, z którą współpracuje integracja. Integracja
+korzysta z tych samych adresów co [panel klienta](https://panel.kuchniavikinga.pl), które mogą się
+zmienić w dowolnym momencie bez uprzedzenia.
