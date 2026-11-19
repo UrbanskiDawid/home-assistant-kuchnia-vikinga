@@ -6,12 +6,16 @@ It creates one sensor, `sensor.kuchnia_vikinga_dzisiaj`:
 - **state**: the number of meals delivered today
 - **attributes**: `date`, and `meals` as a list of `{meal, name, kcal, ingredients}`
 
+![Dashboard card](docs/dashboard_card.png)
+
 The panel is asked **once a day**. After a successful fetch it isn't contacted again until the next day. If a fetch fails, it retries at 5 minutes past the next full hour.
 
 ## Install
 
 Copy `custom_components/kuchnia_vikinga` into `/config/custom_components/` (or add this repo to HACS as a custom repository) and restart Home Assistant.
 Then go to **Settings → Devices & services → Add integration → Kuchnia Vikinga** and log in with your panel account.
+
+![Config flow](docs/config_flow.png)
 
 ## Dashboard card
 
