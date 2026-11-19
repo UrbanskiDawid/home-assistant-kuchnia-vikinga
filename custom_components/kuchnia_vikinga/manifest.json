@@ -5,9 +5,9 @@
     "@UrbanskiDawid"
   ],
   "config_flow": true,
-  "documentation": "https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga",
+  "documentation": "https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/issues",
+  "issue_tracker": "https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/issues",
   "requirements": [],
   "version": "0.1.0"
 }

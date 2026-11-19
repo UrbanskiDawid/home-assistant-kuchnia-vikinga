@@ -1,9 +1,9 @@
 # Kuchnia Vikinga for Home Assistant
 
-[![GitHub Latest Release](https://img.shields.io/github/v/release/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga)](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/releases)
-[![Test](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/actions/workflows/test.yaml/badge.svg)](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/actions/workflows/test.yaml)
-[![Validate HACS](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/actions/workflows/hacs.yaml/badge.svg)](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/actions/workflows/hacs.yaml)
-[![Validate with hassfest](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/actions/workflows/hassfest.yaml)
+[![GitHub Latest Release](https://img.shields.io/github/v/release/UrbanskiDawid/home-assistant-kuchnia-vikinga)](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/releases)
+[![Test](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/test.yaml/badge.svg)](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/test.yaml)
+[![Validate HACS](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/hacs.yaml/badge.svg)](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/hacs.yaml)
+[![Validate with hassfest](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/actions/workflows/hassfest.yaml)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -16,12 +16,12 @@ meals in Home Assistant: each dish's name, kcal and ingredients.
 
 ### Using [HACS](https://hacs.xyz/) (recommended)
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=UrbanskiDawid&repository=home-assistant-tauron-elicznik-kuchnia-vikinga&category=integration)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=UrbanskiDawid&repository=home-assistant-kuchnia-vikinga&category=integration)
 
 Click the button above, or add it by hand:
 
 * In HACS open the ⋮ menu → _Custom repositories_
-* Add `https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga` with type _Integration_
+* Add `https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga` with type _Integration_
 * Search for "Kuchnia Vikinga" and click _Download_
 * Restart Home Assistant
 
@@ -29,11 +29,11 @@ HACS not installed yet? Follow the [HACS download guide](https://hacs.xyz/docs/u
 
 ### Manual
 
-Download [*kuchnia_vikinga.zip*](https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/releases/latest/download/kuchnia_vikinga.zip) and extract it to `config/custom_components/kuchnia_vikinga`:
+Download [*kuchnia_vikinga.zip*](https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/releases/latest/download/kuchnia_vikinga.zip) and extract it to `config/custom_components/kuchnia_vikinga`:
 ```bash
 mkdir -p /config/custom_components/kuchnia_vikinga
 cd /config/custom_components/kuchnia_vikinga
-wget https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/releases/latest/download/kuchnia_vikinga.zip
+wget https://github.com/UrbanskiDawid/home-assistant-kuchnia-vikinga/releases/latest/download/kuchnia_vikinga.zip
 unzip kuchnia_vikinga.zip
 rm kuchnia_vikinga.zip
 ```
@@ -90,7 +90,7 @@ pip install -r requirements_test.txt
 pytest
 ```
 
-To release, push a tag: `git tag v0.1.0 && git push origin v0.1.0`. The workflow sets the manifest version from the tag and attaches `kuchnia_vikinga.zip` to the release.
+To release, push a tag: `git tag v1.2.3 && git push origin v1.2.3`. The workflow sets the manifest version from the tag and attaches `kuchnia_vikinga.zip` to the release.
 
 ## License
 
