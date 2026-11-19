@@ -92,16 +92,6 @@ cards:
 
 Ikona integracji (`brand/icon.png`) jest widoczna w Home Assistant 2026.3 i nowszych.
 
-## Rozwój
-
-```sh
-pip install -r requirements_test.txt
-pytest
-```
-
-Aby wydać nową wersję, wypchnij tag: `git tag v1.2.3 && git push origin v1.2.3`. Workflow ustawi
-wersję w manifeście na podstawie tagu i dołączy `kuchnia_vikinga.zip` do wydania.
-
 ## Licencja
 
 Projekt jest udostępniony na [licencji MIT](LICENSE).
