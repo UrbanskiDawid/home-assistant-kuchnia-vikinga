@@ -56,38 +56,38 @@ Następnie uruchom ponownie Home Assistant.
 
 Integracja tworzy jeden sensor, `sensor.kuchnia_vikinga_dzisiaj`:
 - **stan**: liczba posiłków dostarczonych dzisiaj (0, jeśli nie ma dostawy)
-- **atrybuty**: `date` oraz `meals`, czyli lista `{meal, name, kcal, ingredients}`
+- **atrybuty**: `date` oraz `meals`, czyli lista `{meal, name, kcal, ingredients, vote}`
 
 Panel jest odpytywany **raz dziennie**. Po udanym pobraniu integracja nie łączy się z nim aż do
 następnego dnia. Jeśli pobranie się nie uda, ponawia próbę 5 minut po każdej pełnej godzinie.
 
 ## Karta na dashboard
 
-Sekcja na całą szerokość (widok sekcji) z jednym rozwijanym wierszem na posiłek. Składniki są
-ukryte, dopóki nie klikniesz posiłku.
-Edytuj dashboard → ⋮ → *Edytor konfiguracji YAML* → wklej poniższy fragment do listy `sections:` widoku:
+Integracja zawiera własną kartę, nie trzeba niczego doinstalowywać. Każdy posiłek ma po lewej
+stronie przyciski 👍/👎, a po kliknięciu nazwy rozwijają się składniki. Ponowne kliknięcie
+aktywnego kciuka usuwa ocenę.
+
+Edytuj dashboard → *Dodaj kartę* → wyszukaj **Kuchnia Vikinga** albo wklej w edytorze YAML:
 
 ```yaml
-type: grid
-column_span: 4
-cards:
-  - type: heading
-    heading: Kuchnia Vikinga – dziś
-    icon: mdi:food
-  - type: markdown
-    grid_options:
-      columns: full
-    content: |-
-      {%- set meals = state_attr('sensor.kuchnia_vikinga_dzisiaj', 'meals') or [] -%}
-      {%- for m in meals %}
-      <details>
-      <summary><b>{{ m.meal }}</b> &nbsp;—&nbsp; {{ m.name }} &nbsp;<small>({{ m.kcal }} kcal)</small></summary>
-      <br><small>{{ m.ingredients | join(' · ') }}</small>
-      </details>
-      {% if not loop.last %}<hr>{% endif %}
-      {%- else %}
-      <i>Brak dostawy dzisiaj.</i>
-      {%- endfor %}
+type: custom:kuchnia-vikinga-card
+```
+
+Opcjonalnie: `entity` (domyślnie `sensor.kuchnia_vikinga_dzisiaj`) i `title`.
+
+## Oceny
+
+Oceny są zapisywane lokalnie w Home Assistant (`.storage/kuchnia_vikinga.votes`) według nazwy
+dania, więc to samo danie w kolejnych dniach ma już Twoją ocenę. Każdy posiłek w atrybucie
+`meals` ma pole `vote` (`up`, `down` albo puste).
+
+Ocenę można też ustawić usługą, np. w automatyzacji:
+
+```yaml
+action: kuchnia_vikinga.vote
+data:
+  name: Zupa pomidorowa
+  vote: up   # up, down albo none
 ```
 
 Ikona integracji (`brand/icon.png`) jest widoczna w Home Assistant 2026.3 i nowszych.

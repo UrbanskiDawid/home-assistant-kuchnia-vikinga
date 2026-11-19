@@ -1,0 +1,15 @@
+vote:
+  fields:
+    name:
+      required: true
+      example: "Zupa pomidorowa"
+      selector:
+        text:
+    vote:
+      required: true
+      selector:
+        select:
+          options:
+            - "up"
+            - "down"
+            - "none"
