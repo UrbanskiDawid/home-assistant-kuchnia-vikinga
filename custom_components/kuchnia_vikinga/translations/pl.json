@@ -17,5 +17,21 @@
     "abort": {
       "already_configured": "To konto jest już skonfigurowane."
     }
+  },
+  "services": {
+    "vote": {
+      "name": "Oceń danie",
+      "description": "Kciuk w górę lub w dół dla dania; oceny są zapisywane lokalnie.",
+      "fields": {
+        "name": {
+          "name": "Danie",
+          "description": "Nazwa dania dokładnie taka jak na liście posiłków."
+        },
+        "vote": {
+          "name": "Ocena",
+          "description": "up, down albo none, aby usunąć ocenę."
+        }
+      }
+    }
   }
 }

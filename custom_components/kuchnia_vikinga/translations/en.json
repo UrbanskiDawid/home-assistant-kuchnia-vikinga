@@ -17,5 +17,21 @@
     "abort": {
       "already_configured": "This account is already configured."
     }
+  },
+  "services": {
+    "vote": {
+      "name": "Vote for a dish",
+      "description": "Thumbs up or down for a dish; votes are stored locally.",
+      "fields": {
+        "name": {
+          "name": "Dish",
+          "description": "Dish name exactly as shown in the meals list."
+        },
+        "vote": {
+          "name": "Vote",
+          "description": "up, down, or none to clear the vote."
+        }
+      }
+    }
   }
 }
