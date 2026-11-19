@@ -7,6 +7,7 @@
   "config_flow": true,
   "documentation": "https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/UrbanskiDawid/home-assistant-tauron-elicznik-kuchnia-vikinga/issues",
   "requirements": [],
   "version": "0.1.0"
 }

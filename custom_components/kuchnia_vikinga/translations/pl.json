@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kuchnia Vikinga",
+        "description": "Zaloguj się kontem z panel.kuchniavikinga.pl.",
+        "data": {
+          "username": "E-mail",
+          "password": "Hasło"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Nieprawidłowy e-mail lub hasło.",
+      "cannot_connect": "Nie udało się zalogować do Kuchni Vikinga. Spróbuj ponownie później."
+    },
+    "abort": {
+      "already_configured": "To konto jest już skonfigurowane."
+    }
+  }
+}
