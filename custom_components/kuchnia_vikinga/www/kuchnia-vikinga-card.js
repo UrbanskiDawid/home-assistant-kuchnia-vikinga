@@ -27,9 +27,8 @@ class KuchniaVikingaCard extends HTMLElement {
     const btn = ev.target.closest("button[data-vote]");
     if (!btn) return;
     const meal = this._meals()[Number(btn.dataset.index)];
-    // Clicking the active vote again clears it.
-    const vote = meal.vote === btn.dataset.vote ? "none" : btn.dataset.vote;
-    this._hass.callService("kuchnia_vikinga", "vote", { name: meal.name, vote });
+    if (meal.vote === btn.dataset.vote) return;
+    this._hass.callService("kuchnia_vikinga", "vote", { name: meal.name, vote: btn.dataset.vote });
   }
 
   _meals() {

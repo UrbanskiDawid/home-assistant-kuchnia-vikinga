@@ -1,7 +1,7 @@
 """Sensor: state = number of meals today, attribute `meals` = [{meal, name, kcal, ingredients, vote}].
 
-The panel is asked once a day. After a successful fetch nothing is requested
-until the date changes; on failure it tries again at the next full hour.
+The panel is polled hourly (5 minutes past), and again right after a vote, so
+votes cast in the panel itself show up too. Votes are stored on the panel only.
 """
 
 from __future__ import annotations
@@ -12,13 +12,13 @@ from datetime import date
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_time_change
 from homeassistant.util import dt as dt_util
 
-from .api import VikingClient
-from .const import DOMAIN, SIGNAL_VOTES, TIME_ZONE
+from .api import VikingClient, VikingError
+from .const import DOMAIN, TIME_ZONE
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -46,33 +46,38 @@ class TodayMealsSensor(SensorEntity):
     def extra_state_attributes(self) -> dict | None:
         if self._day is None:
             return None
-        votes = self.hass.data[DOMAIN]
-        return {
-            "date": self._day.isoformat(),
-            "meals": [{**m, "vote": votes.get(m["name"])} for m in self._meals],
-        }
+        return {"date": self._day.isoformat(), "meals": self._meals}
 
     async def async_added_to_hass(self) -> None:
         self.async_on_remove(
             async_track_time_change(self.hass, self._hourly, minute=5, second=0)
         )
-        self.async_on_remove(
-            async_dispatcher_connect(self.hass, SIGNAL_VOTES, self.async_write_ha_state)
-        )
+        self.hass.data[DOMAIN][self._attr_unique_id] = self
+        self.async_on_remove(lambda: self.hass.data[DOMAIN].pop(self._attr_unique_id, None))
         self.hass.async_create_task(self._refresh())
 
     @callback
     def _hourly(self, _now) -> None:
         self.hass.async_create_task(self._refresh())
 
+    async def async_vote(self, name: str, vote: str) -> bool:
+        """Push a vote for today's meal `name`; False if this sensor has no such meal."""
+        meal = next((m for m in self._meals if m["name"] == name), None)
+        if meal is None:
+            return False
+        try:
+            await self._client.set_vote(meal["id"], vote)
+        except VikingError as err:
+            raise HomeAssistantError(f"Saving the vote failed: {err}") from err
+        await self._refresh()
+        return True
+
     async def _refresh(self) -> None:
         today = dt_util.now(dt_util.get_time_zone(TIME_ZONE)).date()
-        if self._day == today:
-            return
         try:
             meals = await self._client.todays_meals(today)
         except Exception as err:  # noqa: BLE001
-            _LOGGER.warning("Fetching today's meals failed, will retry in an hour: %s", err)
+            _LOGGER.warning("Fetching today's meals failed, will retry next hour: %s", err)
             return
         self._day = today
         self._meals = meals

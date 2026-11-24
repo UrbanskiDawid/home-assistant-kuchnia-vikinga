@@ -58,14 +58,13 @@ Integracja tworzy jeden sensor, `sensor.kuchnia_vikinga_dzisiaj`:
 - **stan**: liczba posiłków dostarczonych dzisiaj (0, jeśli nie ma dostawy)
 - **atrybuty**: `date` oraz `meals`, czyli lista `{meal, name, kcal, ingredients, vote}`
 
-Panel jest odpytywany **raz dziennie**. Po udanym pobraniu integracja nie łączy się z nim aż do
-następnego dnia. Jeśli pobranie się nie uda, ponawia próbę 5 minut po każdej pełnej godzinie.
+Panel jest odpytywany **co godzinę** (5 minut po pełnej godzinie) oraz tuż po każdej ocenie.
+Jeśli pobranie się nie uda, integracja ponawia próbę przy następnym odpytaniu.
 
 ## Karta na dashboard
 
 Integracja zawiera własną kartę, nie trzeba niczego doinstalowywać. Każdy posiłek ma po lewej
-stronie przyciski 👍/👎, a po kliknięciu nazwy rozwijają się składniki. Ponowne kliknięcie
-aktywnego kciuka usuwa ocenę.
+stronie przyciski 👍/👎, a po kliknięciu nazwy rozwijają się składniki.
 
 Edytuj dashboard → *Dodaj kartę* → wyszukaj **Kuchnia Vikinga** albo wklej w edytorze YAML:
 
@@ -77,9 +76,10 @@ Opcjonalnie: `entity` (domyślnie `sensor.kuchnia_vikinga_dzisiaj`) i `title`.
 
 ## Oceny
 
-Oceny są zapisywane lokalnie w Home Assistant (`.storage/kuchnia_vikinga.votes`) według nazwy
-dania, więc to samo danie w kolejnych dniach ma już Twoją ocenę. Każdy posiłek w atrybucie
-`meals` ma pole `vote` (`up`, `down` albo puste).
+Oceny są zapisywane na serwerze Kuchni Vikinga (te same, które widzisz w panelu przy posiłkach)
+i nie ma żadnego lokalnego magazynu. Oceny wystawione w panelu pojawiają się w Home Assistant
+przy najbliższym odpytaniu. Każdy posiłek w atrybucie `meals` ma pole `vote` (`up`, `down` albo
+puste) oraz `id`. Oceniać można dzisiejsze posiłki.
 
 Ocenę można też ustawić usługą, np. w automatyzacji:
 
@@ -87,7 +87,7 @@ Ocenę można też ustawić usługą, np. w automatyzacji:
 action: kuchnia_vikinga.vote
 data:
   name: Zupa pomidorowa
-  vote: up   # up, down albo none
+  vote: up   # up albo down
 ```
 
 Ikona integracji (`brand/icon.png`) jest widoczna w Home Assistant 2026.3 i nowszych.

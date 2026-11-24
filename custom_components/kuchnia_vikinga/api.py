@@ -28,14 +28,25 @@ class VikingAuthError(VikingError):
     """The panel rejected the credentials."""
 
 
+SCORE_TO_VOTE = {1: "up", 0: "down"}
+VOTE_TO_SCORE = {"up": 1, "down": 0}
+
+
+def parse_vote(review: dict | None) -> str | None:
+    """The panel's review ({score: 1|0}) as "up"/"down", or None if not voted."""
+    return SCORE_TO_VOTE.get((review or {}).get("score"))
+
+
 def parse_menu(menu: dict) -> list[dict]:
-    """Turn a delivery menu into [{meal, name, kcal, ingredients}]."""
+    """Turn a delivery menu into [{id, meal, name, kcal, ingredients, vote}]."""
     return [
         {
+            "id": m.get("menuMealId"),
             "meal": m.get("mealName", ""),
             "name": m.get("menuMealName", ""),
             "kcal": round((m.get("nutrition") or {}).get("calories") or 0),
             "ingredients": [i["name"] for i in m.get("ingredients") or []],
+            "vote": parse_vote(m.get("review")),
         }
         for m in menu.get("deliveryMenuMeal") or []
     ]
@@ -90,6 +101,26 @@ class VikingClient:
                 raise VikingAuthError("Invalid username or password")
             if resp.status != 200:
                 raise VikingError(f"Login failed: HTTP {resp.status}")
+
+    async def _post_json(self, path: str, body: dict) -> None:
+        async with self._request("POST", path, json=body) as resp:
+            if resp.status not in (200, 201, 204):
+                raise VikingError(f"POST {path}: HTTP {resp.status}")
+
+    async def set_vote(self, menu_meal_id: int, vote: str) -> None:
+        """Store a 👍/👎 for a meal on the panel (a new vote overwrites the old one)."""
+        await self.login()
+        try:
+            await self._post_json(
+                "/api/company/customer/review",
+                {
+                    "reviewId": {"menuMealId": menu_meal_id},
+                    "score": VOTE_TO_SCORE[vote],
+                    "text": "",
+                },
+            )
+        finally:
+            await self.logout()
 
     async def logout(self) -> None:
         try:

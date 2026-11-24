@@ -11,36 +11,31 @@ from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import config_validation as cv
-from homeassistant.helpers.dispatcher import async_dispatcher_send
-from homeassistant.helpers.storage import Store
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.loader import async_get_integration
 
 from .api import VikingClient
-from .const import CARD_URL, DOMAIN, SIGNAL_VOTES, STORAGE_KEY, VOTES
+from .const import CARD_URL, DOMAIN, VOTES
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 VOTE_SCHEMA = vol.Schema(
-    {vol.Required(CONF_NAME): cv.string, vol.Required("vote"): vol.In([*VOTES, "none"])}
+    {vol.Required(CONF_NAME): cv.string, vol.Required("vote"): vol.In(VOTES)}
 )
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    store: Store[dict[str, str]] = Store(hass, 1, STORAGE_KEY)
-    votes: dict[str, str] = await store.async_load() or {}
-    hass.data[DOMAIN] = votes
+    hass.data[DOMAIN] = {}  # entry_id -> sensor; votes live on the vendor's server
 
     async def vote(call: ServiceCall) -> None:
-        """Set (or with vote=none clear) the vote for a dish."""
+        """Send a 👍/👎 for a dish to the panel, then re-pull so the sensor shows it."""
         name = call.data[CONF_NAME].strip()
-        if call.data["vote"] == "none":
-            votes.pop(name, None)
-        else:
-            votes[name] = call.data["vote"]
-        await store.async_save(votes)
-        async_dispatcher_send(hass, SIGNAL_VOTES)
+        for sensor in list(hass.data[DOMAIN].values()):
+            if await sensor.async_vote(name, call.data["vote"]):
+                return
+        raise ServiceValidationError(f"No meal named '{name}' in today's menu")
 
     hass.services.async_register(DOMAIN, "vote", vote, schema=VOTE_SCHEMA)
 

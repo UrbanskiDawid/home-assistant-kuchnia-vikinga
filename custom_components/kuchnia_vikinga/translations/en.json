@@ -21,7 +21,7 @@
   "services": {
     "vote": {
       "name": "Vote for a dish",
-      "description": "Thumbs up or down for a dish; votes are stored locally.",
+      "description": "Thumbs up or down for one of today's dishes; the vote is saved on the Kuchnia Vikinga server.",
       "fields": {
         "name": {
           "name": "Dish",
@@ -29,7 +29,7 @@
         },
         "vote": {
           "name": "Vote",
-          "description": "up, down, or none to clear the vote."
+          "description": "up or down."
         }
       }
     }

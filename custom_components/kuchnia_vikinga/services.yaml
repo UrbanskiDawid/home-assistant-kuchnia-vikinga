@@ -12,4 +12,3 @@ vote:
           options:
             - "up"
             - "down"
-            - "none"

@@ -16,17 +16,23 @@ def test_parse_menu():
     menu = {
         "deliveryMenuMeal": [
             {
+                "menuMealId": 7,
                 "mealName": "Śniadanie",
+                "review": {"reviewId": {"menuMealId": 7}, "score": 1, "text": ""},
                 "menuMealName": "Kakaowe pancakes z twarożkiem",
                 "nutrition": {"calories": 412.6, "caloriesText": "413 kcal"},
                 "ingredients": [{"name": "Truskawki", "major": True}, {"name": "Kakao", "major": False}],
             },
-            {"mealName": "Obiad", "menuMealName": "Zupa pomidorowa", "ingredients": None},
+            {"menuMealId": 8, "mealName": "Obiad", "menuMealName": "Zupa pomidorowa", "ingredients": None,
+             "review": None},
+            {"menuMealId": 9, "mealName": "Kolacja", "menuMealName": "Sałatka", "review": {"score": 0}},
         ]
     }
     assert api.parse_menu(menu) == [
-        {"meal": "Śniadanie", "name": "Kakaowe pancakes z twarożkiem", "kcal": 413, "ingredients": ["Truskawki", "Kakao"]},
-        {"meal": "Obiad", "name": "Zupa pomidorowa", "kcal": 0, "ingredients": []},
+        {"id": 7, "meal": "Śniadanie", "name": "Kakaowe pancakes z twarożkiem", "kcal": 413,
+         "ingredients": ["Truskawki", "Kakao"], "vote": "up"},
+        {"id": 8, "meal": "Obiad", "name": "Zupa pomidorowa", "kcal": 0, "ingredients": [], "vote": None},
+        {"id": 9, "meal": "Kolacja", "name": "Sałatka", "kcal": 0, "ingredients": [], "vote": "down"},
     ]
     assert api.parse_menu({}) == []
 

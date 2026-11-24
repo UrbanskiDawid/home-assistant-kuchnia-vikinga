@@ -21,7 +21,7 @@
   "services": {
     "vote": {
       "name": "Oceń danie",
-      "description": "Kciuk w górę lub w dół dla dania; oceny są zapisywane lokalnie.",
+      "description": "Kciuk w górę lub w dół dla dzisiejszego dania; ocena jest zapisywana na serwerze Kuchni Vikinga.",
       "fields": {
         "name": {
           "name": "Danie",
@@ -29,7 +29,7 @@
         },
         "vote": {
           "name": "Ocena",
-          "description": "up, down albo none, aby usunąć ocenę."
+          "description": "up albo down."
         }
       }
     }
